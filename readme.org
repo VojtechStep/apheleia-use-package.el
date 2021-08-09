@@ -1,0 +1,46 @@
+* apheleia-use-package.el
+
+This package provides an integration layer between [[https://github.com/raxod502/apheleia][Apheleia]] and [[https://github.com/jwiegley/use-package][use-package]], allowing one to set a formatter using a keyword argument to =use-package=.
+
+** Installation
+
+The package is not available anywhere else besides this GitHub repository, so proceed accordingly. The recommended approach is to use [[https://github.com/raxod502/straight.el][straight.el]] with use-package, like so:
+
+#+begin_src emacs-lisp
+(eval-when-compile
+  (use-package apheleia-use-package
+    :straight (:host github
+               :repo "VojtechStep/apheleia-use-package.el")
+    :demand t))
+#+end_src
+
+The package does all of its work during byte-compilation, so it does not need to be loaded at runtime (provided that you byte-compile your configuration).
+
+** Usage
+
+To specify a new formatter, put the formatter name, command, and modes for which it should be active after the =:apheleia= keyword argument of =use-package=.
+
+The first argument is the description of the formatter - a list whose =car= is the formatter identifier and whose =cdr= is the formatter command (consult documentation of =apheleia-format-buffer= for its format).
+
+All the remaining argument specify major modes for which the formatter should be used.
+
+#+begin_src emacs-lisp
+(use-package nix-mode
+  :mode "\\.nix\\'"
+  :hook
+  ((nix-mode) . apheleia-mode)
+  :apheleia
+  (nixpkgs-fmt . ("nixpkgs-fmt"))
+  nix-mode)
+#+end_src
+
+When using a previously defined formatter, you may omit the =cdr= of the formatter description, leaving only its identifier like =(nixpkgs-fmt)=, and you can even omit the parenthesis, like so:
+
+#+begin_src emacs-lisp
+(use-package graphql-mode
+  :hook
+  ((graphql-mode) . apheleia-mode)
+  :apheleia
+  prettier ; or (prettier)
+  graphql-mode)
+#+end_src
