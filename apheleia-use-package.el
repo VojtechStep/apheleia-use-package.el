@@ -81,7 +81,7 @@ The parameters NAME, ARGS, REST and STATE are exmplained in the `use-package' do
       (push `(push '(,mode . ,(car format-spec)) apheleia-mode-alist) eval-form))
     (use-package-concat
      (use-package-process-keywords name rest state)
-     `((eval-after-load 'apheleia-core ',(macroexp-progn (nreverse eval-form)))))))
+     `((eval-after-load 'apheleia-formatters ',(macroexp-progn (nreverse eval-form)))))))
 
 (defalias 'use-package-normalize/:apheleia #'apheleia-use-package--normalize)
 (defalias 'use-package-handler/:apheleia #'apheleia-use-package--handle)
